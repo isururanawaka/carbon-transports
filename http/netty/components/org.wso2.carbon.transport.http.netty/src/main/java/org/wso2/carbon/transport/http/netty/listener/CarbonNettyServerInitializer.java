@@ -142,7 +142,7 @@ public class CarbonNettyServerInitializer extends ChannelInitializer<SocketChann
         }
         p.addLast("compressor", new HttpContentCompressor());
         p.addLast("chunkWriter", new ChunkedWriteHandler());
-        p.addLast("chunkWriter", new HttpObjectAggregator(Integer.MAX_VALUE));
+        p.addLast("chunkAggregrator", new HttpObjectAggregator(Integer.MAX_VALUE));
         try {
             if (listenerConfiguration.getEnableDisruptor()) {
                 p.addLast("handler", new SourceHandler(connectionManager, listenerConfiguration));
