@@ -91,7 +91,7 @@ public class WorkerPoolDispatchingSourceHandler extends SourceHandler {
         }
     }
 
-    private void publishToWorkerPool(Object msg) {
+    private void publishToWorkerPool(Object msg) throws Exception {
         ExecutorService executorService = listenerConfiguration.getExecutorService();
         cMsg = (NettyCarbonMessage) setUPCarbonMessage(msg);
         cMsg.setProperty(org.wso2.carbon.transport.http.netty.common.Constants.IS_DISRUPTOR_ENABLE,
@@ -110,24 +110,28 @@ public class WorkerPoolDispatchingSourceHandler extends SourceHandler {
                         responseCallback.done(carbonMessage);
                     });
             if (continueRequest) {
-                executorService.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            NettyTransportContextHolder.getInstance().getMessageProcessor()
-                                    .receive(cMsg, carbonCallback);
-                            if (NettyTransportContextHolder.getInstance().getMessageProcessor() != null) {
-                                NettyTransportContextHolder.getInstance().getMessageProcessor()
-                                        .receive(cMsg, carbonCallback);
-                            } else {
-                                log.error("Cannot find registered MessageProcessor");
-                            }
+//                executorService.execute(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        try {
+//                            NettyTransportContextHolder.getInstance().getMessageProcessor()
+//                                    .receive(cMsg, carbonCallback);
+//                            if (NettyTransportContextHolder.getInstance().getMessageProcessor() != null) {
+//                                NettyTransportContextHolder.getInstance().getMessageProcessor()
+//                                        .receive(cMsg, carbonCallback);
+//                            } else {
+//                                log.error("Cannot find registered MessageProcessor");
+//                            }
+//
+//                        } catch (Exception e) {
+//                            log.error("Error occurred inside the messaging engine probabl", e);
+//                        }
+//                    }
+//                });
 
-                        } catch (Exception e) {
-                            log.error("Error occurred inside the messaging engine probabl", e);
-                        }
-                    }
-                });
+                NettyTransportContextHolder.getInstance().getMessageProcessor()
+                                                  .receive(cMsg, carbonCallback);
+
             }
         }
     }
