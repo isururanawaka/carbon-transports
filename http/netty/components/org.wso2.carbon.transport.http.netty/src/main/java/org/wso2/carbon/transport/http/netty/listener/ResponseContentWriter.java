@@ -47,7 +47,7 @@ public class ResponseContentWriter implements Writer {
 
     @Override
     public void write(ByteBuffer byteBuffer) {
-        ByteBuf bbuf = Unpooled.copiedBuffer(byteBuffer);
+        ByteBuf bbuf = Unpooled.wrappedBuffer(byteBuffer);
         DefaultHttpContent httpContent = new DefaultHttpContent(bbuf);
         this.channelHandlerContext.write(httpContent);
     }

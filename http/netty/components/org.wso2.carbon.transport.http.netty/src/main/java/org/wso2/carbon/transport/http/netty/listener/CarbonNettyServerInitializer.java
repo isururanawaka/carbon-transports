@@ -19,6 +19,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpContentCompressor;
+import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.ssl.SslHandler;
@@ -141,6 +142,7 @@ public class CarbonNettyServerInitializer extends ChannelInitializer<SocketChann
         }
         p.addLast("compressor", new HttpContentCompressor());
         p.addLast("chunkWriter", new ChunkedWriteHandler());
+        p.addLast("chunkWriter", new HttpObjectAggregator(Integer.MAX_VALUE));
         try {
             if (listenerConfiguration.getEnableDisruptor()) {
                 p.addLast("handler", new SourceHandler(connectionManager, listenerConfiguration));

@@ -68,11 +68,11 @@ public class WorkerPoolDispatchingSourceHandler extends SourceHandler {
         if (msg instanceof FullHttpMessage) {
 
             publishToWorkerPool(msg);
-            ByteBuf content = ((FullHttpMessage) msg).content();
-            cMsg.addHttpContent(new DefaultLastHttpContent(content));
-            if (NettyTransportContextHolder.getInstance().getHandlerExecutor() != null) {
-                NettyTransportContextHolder.getInstance().getHandlerExecutor().executeAtSourceRequestSending(cMsg);
-            }
+//            ByteBuf content = ((FullHttpMessage) msg).content();
+//            cMsg.addHttpContent(new DefaultLastHttpContent(content));
+//            if (NettyTransportContextHolder.getInstance().getHandlerExecutor() != null) {
+//                NettyTransportContextHolder.getInstance().getHandlerExecutor().executeAtSourceRequestSending(cMsg);
+//            }
 
         } else if (msg instanceof HttpRequest) {
             publishToWorkerPool(msg);
@@ -128,9 +128,11 @@ public class WorkerPoolDispatchingSourceHandler extends SourceHandler {
 //                        }
 //                    }
 //                });
-
-                NettyTransportContextHolder.getInstance().getMessageProcessor()
-                                                  .receive(cMsg, carbonCallback);
+                if (msg instanceof FullHttpMessage) {
+                    ByteBuf content = ((FullHttpMessage) msg).content();
+                    cMsg.addHttpContent(new DefaultLastHttpContent(content));
+                }
+                NettyTransportContextHolder.getInstance().getMessageProcessor().receive(cMsg, carbonCallback);
 
             }
         }
