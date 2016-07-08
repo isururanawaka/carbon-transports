@@ -221,7 +221,9 @@ public class ContentAwareMessageProcessorTestCase {
             TestUtil.writeContent(urlConn, requestValue);
             LOGGER.info("############Response Received######");
             assertEquals(200, urlConn.getResponseCode());
+            LOGGER.info("############Response Code######", urlConn.getResponseCode());
             String content = TestUtil.getContent(urlConn);
+            LOGGER.info("############Test Content######" + content);
             assertEquals(requestValue, content);
             urlConn.disconnect();
             LOGGER.info("############Test disconnected######");
