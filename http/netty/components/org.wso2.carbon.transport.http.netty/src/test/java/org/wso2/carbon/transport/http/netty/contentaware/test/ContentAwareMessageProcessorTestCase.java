@@ -217,11 +217,14 @@ public class ContentAwareMessageProcessorTestCase {
             CarbonMessageProcessor carbonMessageProcessor = new ResponseStreamingWithoutBufferingProcessor();
             TestUtil.updateMessageProcessor(carbonMessageProcessor, senderConfiguration);
             HttpURLConnection urlConn = TestUtil.request(baseURI, "/", HttpMethod.POST.name(), true);
+            LOGGER.info("############Request sent######");
             TestUtil.writeContent(urlConn, requestValue);
+            LOGGER.info("############Response Received######");
             assertEquals(200, urlConn.getResponseCode());
             String content = TestUtil.getContent(urlConn);
             assertEquals(requestValue, content);
             urlConn.disconnect();
+            LOGGER.info("############Test disconnected######");
         } catch (IOException e) {
             LOGGER.error("IO Exception occurred", e);
             assertTrue(false);
@@ -231,6 +234,7 @@ public class ContentAwareMessageProcessorTestCase {
 
     @AfterClass
     public void cleanUp() {
+        LOGGER.info("############Cleanup called######");
         TestUtil.cleanUp(nettyListener, httpServer);
     }
 
