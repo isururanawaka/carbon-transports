@@ -71,6 +71,7 @@ public class ContentAwareMessageProcessorTestCase {
     public void disruptorEnabledMessageEchoingFromProcessorTestCase() {
         String testValue = "Test Message";
         try {
+            LOGGER.info("############Runining######" + "disruptorEnabledMessageEchoingFromProcessorTestCase");
             HttpURLConnection urlConn = TestUtil.request(baseURI, "/", HttpMethod.POST.name(), true);
             TestUtil.writeContent(urlConn, testValue);
             assertEquals(200, urlConn.getResponseCode());
@@ -92,6 +93,7 @@ public class ContentAwareMessageProcessorTestCase {
                 .startCarbonTransport(listenerConfiguration, senderConfiguration, new MessageEchoingMessageProcessor());
         String testValue = "Test Message";
         try {
+            LOGGER.info("############Runining######" + "workerPoolEnabledMessageEchoingFromProcessorTestCase");
             HttpURLConnection urlConn = TestUtil.request(baseURI, "/", HttpMethod.POST.name(), true);
             TestUtil.writeContent(urlConn, testValue);
             assertEquals(200, urlConn.getResponseCode());
@@ -111,6 +113,7 @@ public class ContentAwareMessageProcessorTestCase {
         String testValue = "<A><B><C>request</C></B></A>";
         String transformValue = "<A><B><C>transformed</C></B></A>";
         try {
+            LOGGER.info("############Runining######" + "requestTransformFromProcessorTestCase");
             CarbonMessageProcessor carbonMessageProcessor = new RequestMessageTransformProcessor(transformValue);
             TestUtil.updateMessageProcessor(carbonMessageProcessor, senderConfiguration);
             HttpURLConnection urlConn = TestUtil.request(baseURI, "/", HttpMethod.POST.name(), true);
@@ -133,6 +136,7 @@ public class ContentAwareMessageProcessorTestCase {
         String responseValue = "YYYYYYY";
         String expectedValue = responseValue + ":" + requestValue;
         try {
+            LOGGER.info("############Runining######" + "requestResponseTransformFromProcessorTestCase");
             CarbonMessageProcessor carbonMessageProcessor = new RequestResponseTransformProcessor(responseValue);
             TestUtil.updateMessageProcessor(carbonMessageProcessor, senderConfiguration);
             HttpURLConnection urlConn = TestUtil.request(baseURI, "/", HttpMethod.POST.name(), true);
@@ -154,6 +158,7 @@ public class ContentAwareMessageProcessorTestCase {
         String responseValue = "YYYYYYY";
         String expectedValue = responseValue + ":" + requestValue;
         try {
+            LOGGER.info("############Runining######" + "requestResponseCreationFromProcessorTestCase");
             CarbonMessageProcessor carbonMessageProcessor = new RequestResponseCreationProcessor(responseValue);
             TestUtil.updateMessageProcessor(carbonMessageProcessor, senderConfiguration);
             HttpURLConnection urlConn = TestUtil.request(baseURI, "/", HttpMethod.POST.name(), true);
@@ -174,6 +179,7 @@ public class ContentAwareMessageProcessorTestCase {
 
         String requestValue = "<A><B><C>Test Message</C></B></A>";
         try {
+            LOGGER.info("############Runining######" + "requestResponseStreamingFromProcessorTestCase");
             CarbonMessageProcessor carbonMessageProcessor = new RequestResponseCreationStreamingProcessor();
             TestUtil.updateMessageProcessor(carbonMessageProcessor, senderConfiguration);
             HttpURLConnection urlConn = TestUtil.request(baseURI, "/", HttpMethod.POST.name(), true);
@@ -194,6 +200,7 @@ public class ContentAwareMessageProcessorTestCase {
 
         String requestValue = "<A><B><C>Test Message</C></B></A>";
         try {
+            LOGGER.info("############Runining######" + "requestResponseTransformStreamingFromProcessorTestCase");
             CarbonMessageProcessor carbonMessageProcessor = new RequestResponseTransformStreamingProcessor();
             TestUtil.updateMessageProcessor(carbonMessageProcessor, senderConfiguration);
             HttpURLConnection urlConn = TestUtil.request(baseURI, "/", HttpMethod.POST.name(), true);
@@ -214,6 +221,7 @@ public class ContentAwareMessageProcessorTestCase {
 
         String requestValue = "<A><B><C>Test Message</C></B></A>";
         try {
+            LOGGER.info("############Runining######" + "responseStreamingWithoutBufferingTestCase");
             CarbonMessageProcessor carbonMessageProcessor = new ResponseStreamingWithoutBufferingProcessor();
             TestUtil.updateMessageProcessor(carbonMessageProcessor, senderConfiguration);
             HttpURLConnection urlConn = TestUtil.request(baseURI, "/", HttpMethod.POST.name(), true);

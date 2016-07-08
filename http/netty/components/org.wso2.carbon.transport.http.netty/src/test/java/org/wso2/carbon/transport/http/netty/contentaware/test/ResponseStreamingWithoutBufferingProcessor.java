@@ -26,6 +26,9 @@ import org.wso2.carbon.messaging.DefaultCarbonMessage;
 import org.wso2.carbon.messaging.TransportSender;
 import org.wso2.carbon.transport.http.netty.common.Constants;
 
+import java.nio.ByteBuffer;
+import java.util.List;
+
 /**
  * A Message Processor which respond in streaming manner without buffering.
  */
@@ -33,15 +36,14 @@ public class ResponseStreamingWithoutBufferingProcessor implements CarbonMessage
 
     @Override
     public boolean receive(CarbonMessage carbonMessage, CarbonCallback callback) throws Exception {
+        List<ByteBuffer> byteBufferList = carbonMessage.getFullMessageBody();
         CarbonMessage cMsg = new DefaultCarbonMessage(false);
         cMsg.setHeader(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
         cMsg.setHeader(HttpHeaders.Names.TRANSFER_ENCODING, HttpHeaders.Values.CHUNKED);
         cMsg.setHeader(HttpHeaders.Names.CONTENT_TYPE, Constants.TEXT_PLAIN);
         cMsg.setProperty(Constants.HTTP_STATUS_CODE, 200);
         callback.done(cMsg);
-        while (!(carbonMessage.isEmpty() && carbonMessage.isEndOfMsgAdded())) {
-            cMsg.addMessageBody(carbonMessage.getMessageBody());
-        }
+        byteBufferList.forEach(buffer -> cMsg.addMessageBody(buffer));
         cMsg.setEndOfMsgAdded(true);
         return false;
     }
